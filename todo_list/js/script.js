@@ -71,7 +71,7 @@ window.onload = function()
 				var idUser = listadoPersonas[ind].primernombre;
 				console.log("Valor de idUser: ", idUser);
 				ind = buscaIndice(idUser);
-				if(ind > 0)
+				if(ind >= 0)
 				{
 					listadoPersonas[ind].activo = 0;
 					localStorage.setItem("listado1", JSON.stringify(listadoPersonas));
