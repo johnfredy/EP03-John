@@ -46,13 +46,11 @@ input[type="button"]:hover {
 }
 ::-webkit-input-placeholder {
  color: #C3C3C4;
- font-size: 0.3em;
+ font-size: 0.8	em;
 }
 #nombre{
 	padding: 10px;
 	background: transparent;
-	border: 0;
-	border-bottom: 1px solid #435160;
 	outline: none;
 	font-size: 1.1em;
 	text-align: center;
@@ -61,6 +59,7 @@ input[type="button"]:hover {
 	height: 40px;
 	margin-left: 15px;
 	color: #000;
+	border: 1px  solid #435160;
 }
 #cajon1
 {
@@ -84,15 +83,11 @@ div {
 
 .lista1{
 	color: gray;
-	border-top: 1px solid #C1C3D1;
- border-bottom-: 1px solid #C1C3D1;
- border-right: 1px solid #C1C3D1;
+ border: 1px solid #C1C3D1;
 }
 .lista{
 	color: black;
-	border-top: 1px solid #C1C3D1;
- border-bottom-: 1px solid #C1C3D1;
- border-right: 1px solid #C1C3D1;
+ border: 1px solid #C1C3D1;
 }
 .lista:hover{
  background:#0000ff;
