@@ -4,14 +4,16 @@ window.onload = function()
 	var indEdita = -1; //El índice de Edición...
 	var elementos = [ "nombre"];
 	//Constructor Persona...
-	function persona(pn)
+	function persona(pn,ac)
 	{
 		this.primernombre = pn;
+		this.activo = ac;
 		//Para devolver los datos del usuario a ser impresos...
 		this.imprime = function()
 		{
 			return [
-						this.primernombre
+						this.primernombre,
+						this.activo
 					];
 		}
 	}
@@ -20,11 +22,12 @@ window.onload = function()
 	if(localStorage.getItem("listado1"))
 	{
 		var objTMP = eval(localStorage.getItem("listado1"));
-		var pn = "";
+		var pn = ac= "";
 		for(var i in objTMP)
 		{
 			var pn = objTMP[i].primernombre;
-			var nuevaPersona = new persona(pn);
+			var ac = objTMP[i].activo;
+			var nuevaPersona = new persona(pn,ac);
 			listadoPersonas.push(nuevaPersona);
 		}
 	}
@@ -33,28 +36,27 @@ window.onload = function()
 	var imprimeUsuarios = (function imprimeUsuarios()
 	{
 		var txt = "<table class = 'table-fill'>" + 
-					"<thead><tr>" + 
-					"<th>Nombre</th>" +
-					"<th>Editar</th>" + 
-					"<th>Eliminar</th></tr></thead>" + 
 					"<tbody class = 'table-hover'>";
 		for(var i = 0; i < listadoPersonas.length; i++)
 		{
-			txt += "<tr>";
 			var datosPersona = listadoPersonas[i].imprime();
-			for(var c = 0; c < datosPersona.length; c++)
-			{
-				txt += "<td><center>"+(datosPersona[c])+"</center></td>";
+			if (datosPersona[1]===1) {
+				txt += "<div class='lista'><center>"+(datosPersona[0])+"</center>";
+			
+				//Editar...
+				txt += "<img src = 'img/activo1.png' border = '0' id = 'e_"+i+"'/>";
+				//Eliminar...
+				txt += "<img src = 'img/eliminar1.png' align='right' border = '0' id = 'd_"+i+"'/>"+"</div>";
 			}
-			//Editar...
-			txt += "<td><center>";
-			txt += "<img src = 'img/editar.png' border = '0' id = 'e_"+i+"'/>";
-			txt += "</center</td>";
-			//Eliminar...
-			txt += "<td><center>";
-			txt += "<img src = 'img/eliminar.png' border = '0' id = 'd_"+i+"'/>";
-			txt += "</center</td>";
-			txt += "</tr>";
+			else{
+				txt += "<div class='lista1'><center>"+(datosPersona[0])+"</center>";
+			
+				//activar...
+				txt += "<img src = 'img/activo2.png' border = '0' id = 'e_"+i+"'/>";
+				//Eliminar...
+				txt += "<img src = 'img/eliminar2.png' align='right' border = '0' id = 'd_"+i+"'/>"+"</div>";
+			
+			}
 		}
 		txt += "</tbody></table>";
 		nom_div("imprime").innerHTML = txt;
@@ -66,28 +68,29 @@ window.onload = function()
 			nom_div("e_" + i).addEventListener('click', function(event)
 			{
 				var ind = event.target.id.split("_")[1];
-				var idUser = listadoPersonas[ind].identificacion;
+				var idUser = listadoPersonas[ind].primernombre;
 				console.log("Valor de idUser: ", idUser);
 				ind = buscaIndice(idUser);
-				if(ind >= 0)
+				if(ind > 0)
 				{
-					nom_div("identifica").value = listadoPersonas[ind].identificacion;
-					nom_div("nombre").value = listadoPersonas[ind].primernombre;
-					nom_div("apellido").value = listadoPersonas[ind].primerapellido;
-					nom_div("email").value = listadoPersonas[ind].email;
-					nom_div("fechanace").value = listadoPersonas[ind].fechanacimiento;
-					indEdita = ind;
+					listadoPersonas[ind].activo = 0;
+					localStorage.setItem("listado1", JSON.stringify(listadoPersonas));
+					imprimeUsuarios();
+					limpiarCampos();
 				}
 				else
 				{
-					alert("No existe el ID");
+					listadoPersonas[ind].activo = 1;
+					localStorage.setItem("listado1", JSON.stringify(listadoPersonas));
+					imprimeUsuarios();
+					limpiarCampos();
 				}
 			});
 			//Eliminar...
 			nom_div("d_" + i).addEventListener('click', function(event)
 			{
 				var ind = event.target.id.split("_")[1];
-				var idUser = listadoPersonas[ind].identificacion;
+				var idUser = listadoPersonas[ind].primernombre;
 				if(confirm("¿Está segur@ de realizar está acción?"))
 				{
 					ind = buscaIndice(idUser);
@@ -109,7 +112,7 @@ window.onload = function()
 		var indice = -1;
 		for(var i in listadoPersonas)
 		{
-			if(listadoPersonas[i].identificacion === id)
+			if(listadoPersonas[i].primernombre === id)
 			{
 				indice = i;
 				break;
@@ -177,7 +180,7 @@ window.onload = function()
 					//No se estaba editando...
 					if(indEdita < 0)
 					{
-						var nuevaPersona = new persona(valores[0]);
+						var nuevaPersona = new persona(valores[0],1);
 						listadoPersonas.push(nuevaPersona);
 					}
 
