@@ -71,20 +71,12 @@ window.onload = function()
 				var idUser = listadoPersonas[ind].primernombre;
 				console.log("Valor de idUser: ", idUser);
 				ind = buscaIndice(idUser);
-				if(ind >= 0)
-				{
-					listadoPersonas[ind].activo = 0;
-					localStorage.setItem("listado1", JSON.stringify(listadoPersonas));
-					imprimeUsuarios();
-					limpiarCampos();
-				}
-				else
-				{
-					listadoPersonas[ind].activo = 1;
-					localStorage.setItem("listado1", JSON.stringify(listadoPersonas));
-					imprimeUsuarios();
-					limpiarCampos();
-				}
+				
+				listadoPersonas[ind].activo = 0;
+				localStorage.setItem("listado1", JSON.stringify(listadoPersonas));
+				imprimeUsuarios();
+				limpiarCampos();
+				
 			});
 			//Eliminar...
 			nom_div("d_" + i).addEventListener('click', function(event)
